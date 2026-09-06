@@ -1,80 +1,130 @@
 # Weekend Stay
 
-A tiny, fictional hotel-listing website for a hands-on coding-agent demonstration. Clone it, ask your agent to explain the files, open it in a browser, and make one small change you can verify.
+A small full-stack hotel-listing project for a hands-on coding-agent demonstration: **React + Vite in the browser, Node.js + Express on the server, and real API tests**. One npm package, not a monorepo or a production booking service.
 
-**No packages, build step, server, API keys, accounts, or internet connection are needed to run the downloaded website.** All data and decorative artwork are local. JavaScript must be enabled.
+All six stays, prices, descriptions, and CSS illustrations are fictional. There are no databases, accounts, API keys, paid services, real bookings, or payments.
 
-## Get it and open it
+## Install and run
 
-With Git:
+Requires **Node.js 22.12 or newer** and npm. A current LTS release from <https://nodejs.org/> is recommended. Check `node --version` and `npm --version` first.
 
 ```sh
 git clone https://github.com/DomBarker99/codex-website-demo.git
 cd codex-website-demo
+npm install
+npm run dev
 ```
 
-Or, with an already-installed and authenticated GitHub CLI:
+Alternatively, an installed/authenticated GitHub CLI can clone it with `gh repo clone DomBarker99/codex-website-demo`.
 
-```sh
-gh repo clone DomBarker99/codex-website-demo
-cd codex-website-demo
-```
+Open **http://127.0.0.1:5173**. The terminal runs two processes with labeled output:
 
-Double-click `index.html` in your file manager. On macOS, the equivalent terminal command is:
+- **web**: Vite serves React and updates the browser as you edit.
+- **api**: Express serves JSON at **http://127.0.0.1:3001/api/stays** and restarts when server files change.
 
-```sh
-open index.html
-```
+**Ctrl+C stops both.** Unlike the first static version, double-clicking `index.html` is no longer a run method. Dependencies need internet for installation; the running app uses only local assets and local API requests.
 
-On Windows, double-click works too, or use `Start-Process .\index.html` from PowerShell. There is no `npm install` or `npm run dev` command for this project.
+If you already cloned the static starter, first inspect `git status`, preserve your own changes, and pull the updated repository before installing dependencies.
 
-## What is here?
+## Commands
 
-| File | Job |
+| Command | What it does |
 | --- | --- |
-| `index.html` | Page structure, destination control, and the reusable stay-card template |
-| `styles.css` | Responsive layout, colors, and CSS-drawn scenery |
-| `script.js` | Six fictional stays, destination filtering, and rendering |
-| `AGENTS.md` | Project guidance for a coding agent; not a security boundary |
+| `npm install` | Install dependencies; `package-lock.json` records exact resolved versions |
+| `npm ci` | Install exactly from the lockfile, useful for a fresh checkout or CI |
+| `npm run dev` | Start Vite and Express together with live reload/restart |
+| `npm test` | Run HTTP API tests with Node's built-in test runner, using a temporary port |
+| `npm run test:watch` | Rerun API tests when code changes |
+| `npm run build` | Compile the React frontend into `dist/` |
+| `npm start` | Serve the built frontend and API together at http://127.0.0.1:3001 |
 
-The starting site shows all six stays in a fixed, intentionally unsorted order. Destination filtering and reset already work. **Price sorting is deliberately not implemented**—it is the small feature to build during the demonstration.
+For a production-build check, stop the dev processes, run `npm run build`, then `npm start`. This is a local demo server, bound to loopback, not a deployment configuration. Generated `dist/` files and `node_modules/` are ignored by Git. Builds preserve previously generated assets rather than deleting them automatically.
+
+If port 3001 is occupied, stop **your own** earlier demo process, or use `PORT=3002 npm run dev` on macOS/Linux (`$env:PORT=3002; npm run dev` in PowerShell). Vite's API proxy reads the same setting. Vite uses port 5173 and exits with an error rather than silently changing the URL if that port is occupied. Do not stop unrelated processes.
+
+## Find your way around
+
+```text
+package.json                 dependencies and commands
+package-lock.json            exact dependency versions
+vite.config.js               React tooling and local API proxy
+index.html                   React's HTML entry point
+src/
+  client/
+    main.jsx                 mounts React and imports styles
+    App.jsx                  page, selection, fetching lifecycle, UI states
+    api.js                   browser-to-server HTTP request
+    styles.css               responsive layout and CSS artwork
+    components/
+      SearchFilters.jsx      labeled destination selector and reset
+      StayCard.jsx           one reusable hotel card
+  server/
+    index.js                 starts the server and validates its port/build
+    app.js                   Express setup, health route, static hosting, errors
+    routes/stays.js          query validation and server-side filtering
+    data/stays.js            six fictional fixtures in featured order
+test/
+  stays.test.js              HTTP tests against the actual Express app
+AGENTS.md                    standing guidance for a coding agent
+```
+
+**Trace one interaction:** select Monterey → React state changes → `api.js` requests `/api/stays?destination=Monterey` → Vite proxies to Express → the route validates and filters fixtures → JSON returns → React renders two `StayCard` components.
+
+The dropdown options come from API metadata, not a duplicate client-side fixture list. Loading, no-results, and request-failure states are explicit. A failed request has a **Try again** action; an aborted older request cannot overwrite a newer selection. React Strict Mode may start and cancel an extra request during development; that is expected.
+
+## API contract
+
+### `GET /api/health`
+
+```json
+{ "status": "ok" }
+```
+
+### `GET /api/stays?destination=Monterey`
+
+Returns `{ "stays": [...], "count": 2, "destinations": ["Monterey", "San Francisco", "Santa Cruz"] }`.
+
+- No destination, an empty value, or whitespace: all six stays in featured order.
+- Destination matching ignores case and surrounding whitespace.
+- An unknown city: HTTP 200 with an empty `stays` array and count zero.
+- Repeated destination values, values longer than 80 characters, or unsupported query parameters: HTTP 400 with `{ "error": "..." }`.
+- Unknown API routes: JSON HTTP 404, never the React HTML page.
+- No mutation endpoints. Changes are edits to the source files, not writes to a live database.
+
+The tests cover the contract, all three city filters, stable featured order, empty results, invalid requests, and read-only behavior. They do not replace browser checks of the React UI.
 
 ## Start with understanding
 
-After installing and signing into Codex CLI, start it from inside this repository:
+After installing and signing into Codex CLI, launch `codex` **from the repository root**. If an agent cloned the repository from a parent directory, exit that session, enter this folder, and restart Codex here.
 
-```sh
-codex
-```
+> Read AGENTS.md, README.md, and package.json. Explain the client/server structure, how selecting a destination reaches the API, and which commands install, run, test, and build this project. Do not change files, install anything, or commit yet.
 
-Example opening prompt:
+Next, explicitly ask it to install/start the project and explain the commands. The useful lesson is the agent operating actual development tools, not just generating code in chat.
 
-> Read AGENTS.md and the project files. Before changing anything, explain what this website does, what each file is responsible for, and how to open it locally. Do not edit, install anything, or commit.
+## Suggested on-camera change: price sorting
 
-If an agent cloned this repository from a parent folder, exit that initial session, enter this directory, and start Codex here. A `cd` inside one shell tool call is not necessarily a change to the agent session's working directory or instruction scope.
+**Price sorting is deliberately not implemented.** The source order is $185, $125, $240, $165, $210, $145. The existing `.sort()` call orders the destination names, not the stays.
 
-## Suggested on-camera change
+> Add a labeled price-sort dropdown with Featured, Price: low to high, and Price: high to low. Send the sort choice to the API and perform sorting on the server. Validate the new query parameter and add API tests. Preserve destination filtering and the original Featured order. Reset filter must reset both controls. Keep the existing stack and design. Run tests and build, show the diff, and explain how to check the browser. Do not commit or push.
 
-> Add a labeled price-sort dropdown with Featured, Price: low to high, and Price: high to low. Preserve destination filtering. Featured must restore the original order, and Reset filter must reset both controls. Keep the site dependency-free. Show the diff and explain how to verify it. Do not commit or push.
+Verify the actual result:
 
-Check the actual browser, not only the agent's summary:
+- Featured order: Harbor House, Redwood Hideaway, Sunset Loft, Cypress Cottage, North Beach Nook, Boardwalk Bungalow.
+- Low-to-high prices: **$125, $145, $165, $185, $210, $240**; high-to-low is the reverse.
+- Monterey low-to-high: Cypress Cottage ($165), then Harbor House ($185).
+- Featured restores original order after sorting; the source fixtures were not mutated.
+- Reset restores both controls and all six stays in Featured order.
+- Invalid sort values return a useful HTTP 400 response, and tests prove the expected behavior.
+- Both controls have visible labels, support keyboard operation, and fit on a narrow screen.
+- `npm test` and `npm run build` pass. Inspect `git diff` before deciding whether to commit.
 
-- Initial/Featured order: Harbor House, Redwood Hideaway, Sunset Loft, Cypress Cottage, North Beach Nook, Boardwalk Bungalow.
-- Low-to-high prices: **$125, $145, $165, $185, $210, $240**. High-to-low is the reverse.
-- Monterey has two stays: low-to-high should be Cypress Cottage ($165), then Harbor House ($185).
-- Featured restores original order even after sorting. Sorting should not mutate the source data array.
-- Reset restores all six stays in Featured order and resets both controls.
-- Both controls have visible labels, work with the keyboard, and fit on a narrow screen.
-- Reload after saving files. Inspect `git diff` and `git status` before deciding whether to commit.
+## Check the starter before filming
 
-The prompt above describes a future change; the starter repository does not already satisfy it.
+1. `npm install`, `npm test`, and `npm run build` succeed.
+2. `npm run dev` shows six cards and the original prices at port 5173.
+3. Each destination shows exactly two matching stays; reset restores all six.
+4. Use Tab, dropdown keyboard navigation, and the reset button; narrow the browser to check the card layout.
+5. In DevTools Network, observe `/api/stays` when changing destinations. Throttle the request to see loading. Blocking that request demonstrates the error state; unblock it and choose Try again to recover.
+6. The API URL with `destination=Atlantis` shows the empty-result contract. The normal dropdown only lists destinations that have stays.
 
-## Verify the starter
-
-1. Open `index.html`: six cards appear, with the prices $185, $125, $240, $165, $210, $145 in that order.
-2. Choose each destination: two matching stays appear and the count changes to `2 stays`.
-3. Select **Reset filter**: all six return in their original order.
-4. Use Tab and the keyboard to reach and operate the dropdown and reset button.
-5. Narrow the browser: the cards move from three columns to two, then one, without horizontal scrolling.
-
-All names, descriptions, prices, and illustrations are fictional. This is a learning demo, not an actual booking service, travel recommendation, or payment application.
+The earlier dependency-free starter remains in Git history at commit `cd692ca`. No live deployment is configured; this GitHub repository is the source for a local demo.

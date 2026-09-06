@@ -2,26 +2,28 @@
 
 ## Understand before editing
 
-- This repository is a small, static website: HTML, CSS, and plain JavaScript.
-- Read `README.md` and the relevant files before proposing changes.
-- The six stays in `script.js` are fictional local data. There is no backend or booking system.
-- Explain commands and request approval when the active harness permissions require it. These instructions do not grant permissions or replace sandbox controls.
+- This is one npm package with a React/Vite frontend and a Node.js/Express API, using JavaScript and ES modules. It is not a multi-package workspace.
+- Read `README.md`, `package.json`, and relevant source files before changing anything.
+- `src/client/` owns React components, browser fetching, and CSS. `src/server/` owns request validation, filtering, and fictional fixture data. `test/` contains real HTTP API tests using Node's built-in test runner.
+- Read the fixture data through the API in browser code; do not import server data into React.
+- Explain commands and respect harness approval/sandbox settings. This file provides guidance, not permissions or guaranteed enforcement.
 
 ## Bound the work
 
 - Work only in this repository. Do not inspect or modify unrelated folders.
-- Complete the requested task without unrelated cleanup or a redesign.
-- Keep the website dependency-free. Do not add frameworks, package managers, external assets, trackers, or API calls unless explicitly requested.
-- Preserve the destination filter, reset behavior, responsive layout, visible control labels, and keyboard access.
-- Keep the original stay order available; do not mutate the source `stays` array when adding sorting.
+- Complete the requested task without unrelated refactoring, a redesign, or extra architecture.
+- Preserve destination filtering, reset, responsive layout, visible labels, keyboard access, and loading/empty/error states.
+- Preserve the fixture array's original featured order. When implementing sorting, sort a derived copy rather than mutating the source array.
+- Add tests for new API behavior and invalid input. Keep existing behavior covered.
+- Do not add databases, authentication, payments, external assets/services, trackers, or dependencies unless explicitly requested.
 - Do not edit `AGENTS.md` unless specifically asked.
-- Do not commit, push, publish, or open a pull request unless explicitly asked.
-- Never add credentials, session data, personal files, or real student/course information.
+- Do not commit, push, publish, or open a PR unless explicitly asked.
+- Never add credentials, session data, personal files, or actual student/course information.
 
 ## Run and verify
 
-- Open `index.html` directly in a browser; on macOS use `open index.html`. No installation or build command is needed.
-- Refresh the page after editing. Check all six stays, each destination, reset, keyboard operation, and a narrow viewport.
-- For a new feature, check its expected result in the browser and verify existing behavior still works.
-- If you cannot perform a browser check, state that clearly and provide the exact manual check. Do not report unperformed tests as passed.
-- After editing, explain the changed files, show or summarize `git diff`, and report checks performed plus any remaining limitations.
+- Requires Node.js 22.12+ and npm. Install with `npm install`; the committed lockfile supports reproducible installs.
+- `npm run dev`: Express API on 127.0.0.1:3001 and Vite frontend on 127.0.0.1:5173. Open the Vite URL, not `index.html` directly. Ctrl+C stops both.
+- `npm test`: HTTP API checks on a temporary port; no dev server needed. `npm run build`: compile React. `npm start`: serve the completed build and API together on port 3001.
+- Check the actual browser: six stays, each destination, reset, keyboard operation, narrow viewport, and the requested feature. Confirm errors can recover via Try again.
+- After edits, run tests and build, inspect `git diff`/`git status`, and explain changed files and verification results. Report unperformed checks honestly.

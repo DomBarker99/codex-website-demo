@@ -1,0 +1,40 @@
+{
+  "name": "codex-website-demo",
+  "version": "1.0.0",
+  "description": "A React, Vite, and Express hotel-listing demo for learning to explore, run, and test a full-stack project with Codex.",
+  "homepage": "https://github.com/DomBarker99/codex-website-demo#readme",
+  "bugs": {
+    "url": "https://github.com/DomBarker99/codex-website-demo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DomBarker99/codex-website-demo.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others --names api,web \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "nodemon --watch src/server --ext js src/server/index.js",
+    "dev:web": "vite",
+    "build": "vite build",
+    "start": "node src/server/index.js --serve-client",
+    "test": "node --test",
+    "test:watch": "node --test --watch"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "nodemon": "^3.1.14",
+    "vite": "^8.2.2"
+  }
+}

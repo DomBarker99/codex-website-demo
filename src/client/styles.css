@@ -51,6 +51,12 @@ h2 { font-size: 22px; font-weight: 650; letter-spacing: -0.7px; margin: 0; }
 select { border: 1px solid #bdc9bd; border-radius: 6px; padding: 10px 34px 10px 12px; min-height: 44px; max-width: 100%; background: #fffefa; color: var(--ink); font-size: 13px; }
 .reset-button { border: 0; background: transparent; padding: 12px 4px; min-height: 44px; color: var(--muted); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .reset-button:hover { color: var(--accent); }
+select:disabled { opacity: 0.65; cursor: wait; }
+.state-panel { padding: 32px; border: 1px solid var(--line); border-radius: 9px; background: #fffefa; color: var(--muted); line-height: 1.7; }
+.state-panel h3 { margin: 0; color: var(--ink); }
+.state-panel p { margin: 8px 0 16px; }
+.state-panel button { min-height: 44px; padding: 10px 18px; border: 0; border-radius: 6px; color: white; background: var(--ink); cursor: pointer; }
+.state-error { border-color: var(--accent); }
 .results-count { margin: 0 0 0 auto; font-size: 12px; color: var(--muted); white-space: nowrap; }
 
 .stay-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 25px; }
