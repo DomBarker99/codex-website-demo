@@ -93,38 +93,4 @@ Returns `{ "stays": [...], "count": 2, "destinations": ["Monterey", "San Francis
 
 The tests cover the contract, all three city filters, stable featured order, empty results, invalid requests, and read-only behavior. They do not replace browser checks of the React UI.
 
-## Start with understanding
-
-After installing and signing into Codex CLI, launch `codex` **from the repository root**. If an agent cloned the repository from a parent directory, exit that session, enter this folder, and restart Codex here.
-
-> Read AGENTS.md, README.md, and package.json. Explain the client/server structure, how selecting a destination reaches the API, and which commands install, run, test, and build this project. Do not change files, install anything, or commit yet.
-
-Next, explicitly ask it to install/start the project and explain the commands. The useful lesson is the agent operating actual development tools, not just generating code in chat.
-
-## Suggested on-camera change: price sorting
-
-**Price sorting is deliberately not implemented.** The source order is $185, $125, $240, $165, $210, $145. The existing `.sort()` call orders the destination names, not the stays.
-
-> Add a labeled price-sort dropdown with Featured, Price: low to high, and Price: high to low. Send the sort choice to the API and perform sorting on the server. Validate the new query parameter and add API tests. Preserve destination filtering and the original Featured order. Reset filter must reset both controls. Keep the existing stack and design. Run tests and build, show the diff, and explain how to check the browser. Do not commit or push.
-
-Verify the actual result:
-
-- Featured order: Harbor House, Redwood Hideaway, Sunset Loft, Cypress Cottage, North Beach Nook, Boardwalk Bungalow.
-- Low-to-high prices: **$125, $145, $165, $185, $210, $240**; high-to-low is the reverse.
-- Monterey low-to-high: Cypress Cottage ($165), then Harbor House ($185).
-- Featured restores original order after sorting; the source fixtures were not mutated.
-- Reset restores both controls and all six stays in Featured order.
-- Invalid sort values return a useful HTTP 400 response, and tests prove the expected behavior.
-- Both controls have visible labels, support keyboard operation, and fit on a narrow screen.
-- `npm test` and `npm run build` pass. Inspect `git diff` before deciding whether to commit.
-
-## Check the starter before filming
-
-1. `npm install`, `npm test`, and `npm run build` succeed.
-2. `npm run dev` shows six cards and the original prices at port 5173.
-3. Each destination shows exactly two matching stays; reset restores all six.
-4. Use Tab, dropdown keyboard navigation, and the reset button; narrow the browser to check the card layout.
-5. In DevTools Network, observe `/api/stays` when changing destinations. Throttle the request to see loading. Blocking that request demonstrates the error state; unblock it and choose Try again to recover.
-6. The API URL with `destination=Atlantis` shows the empty-result contract. The normal dropdown only lists destinations that have stays.
-
 The earlier dependency-free starter remains in Git history at commit `cd692ca`. No live deployment is configured; this GitHub repository is the source for a local demo.
