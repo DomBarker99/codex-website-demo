@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Weekend Stay: a small, fictional hotel website for learning to work with a coding agent.">
+    <title>Weekend Stay — a little change of scenery</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#stays">Skip to stays</a>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Weekend Stay home">
+          <span class="brand-mark" aria-hidden="true">w.</span>
+          Weekend Stay
+        </a>
+        <span class="demo-badge">A tiny website demo</span>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <p class="eyebrow">Less planning. More weekend.</p>
+            <h1 id="hero-title">A little change<br>of <span>scenery.</span></h1>
+            <p class="hero-description">A coastal cottage. A city hideout. Somewhere under the redwoods. Find a spot for your next California escape.</p>
+          </div>
+          <aside class="weekend-note" aria-label="About this collection">
+            <span class="note-icon" aria-hidden="true">↗</span>
+            <p class="eyebrow">The short-list</p>
+            <p class="note-title">Close to home.<br>Far from ordinary.</p>
+            <p>6 fictional stays · 3 destinations<br>One very simple website.</p>
+          </aside>
+        </section>
+
+        <section id="stays" class="stays-section" aria-labelledby="stays-title" tabindex="-1">
+          <div class="section-heading">
+            <h2 id="stays-title">Find your kind of weekend</h2>
+            <span class="collection-label">The California collection / 01</span>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-field">
+              <label for="destination">Destination</label>
+              <select id="destination">
+                <option value="">All destinations</option>
+                <option value="Monterey">Monterey</option>
+                <option value="San Francisco">San Francisco</option>
+                <option value="Santa Cruz">Santa Cruz</option>
+              </select>
+            </div>
+            <button id="reset-filters" class="reset-button" type="button">Reset filter</button>
+            <p id="results-count" class="results-count" role="status" aria-atomic="true"></p>
+          </div>
+          <noscript><p>Enable JavaScript to see the six sample stays and use the destination filter.</p></noscript>
+          <div id="stay-grid" class="stay-grid"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p><strong>Small website. Real files. Your next experiment.</strong></p>
+        <p>Learning demo only. All stays and prices are fictional. No bookings or payments.</p>
+      </footer>
+    </div>
+
+    <template id="stay-template">
+      <article class="stay-card">
+        <div class="stay-art" aria-hidden="true">
+          <span class="art-sun"></span>
+          <span class="art-landscape"></span>
+          <span class="art-house"></span>
+          <span class="art-caption"></span>
+        </div>
+        <div class="stay-content">
+          <p class="stay-location"></p>
+          <h3 class="stay-name"></h3>
+          <p class="stay-description"></p>
+          <div class="stay-details">
+            <span class="stay-guests"></span>
+            <p class="stay-price"><strong></strong><span> / night</span></p>
+          </div>
+        </div>
+      </article>
+    </template>
+  </body>
+</html>
